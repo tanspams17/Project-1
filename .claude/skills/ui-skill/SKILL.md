@@ -194,3 +194,18 @@ Then synthesize the design system + detailed searches and implement.
 ## Before Delivering App UI
 
 Read `references/pro-rules.md` and run through its canonical Pre-Delivery Checklist. It covers icon/visual-element discipline, interaction feedback, light/dark contrast, safe-area layout, and accessibility — scoped to native/mobile app UI (iOS/Android/React Native/Flutter).
+
+## Component Generation (Magic MCP)
+
+This skill's `search.py` gives design *guidance* — recommended styles, colors, typography, tokens, and rules — but it does not generate component code. For actual UI component generation from a natural-language prompt, this repo also configures the `magic` MCP server (`.mcp.json`, `21st-dev/magic`).
+
+**Setup (one-time, per developer machine):**
+1. Get an API key from https://21st.dev/magic/console.
+2. Export it as an environment variable before starting Claude Code — **never commit the key itself**:
+   ```bash
+   export API_KEY_21ST="your-key-here"
+   ```
+   `.mcp.json` references `${API_KEY_21ST}` and Claude Code expands it from your shell environment at connect time.
+3. Restart Claude Code / run `claude mcp list` to confirm the `magic` server is connected.
+
+**Usage:** ask for a component in natural language (e.g. "a pricing table with three tiers and a monthly/annual toggle") or type `/ui <description>`. Pair it with this skill's design-system output — resolve colors/typography/style with `search.py --design-system` first, then hand those tokens to the Magic MCP prompt so the generated component matches the rest of the project instead of using Magic's own defaults.
